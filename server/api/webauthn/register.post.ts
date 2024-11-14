@@ -2,7 +2,13 @@ import { z } from 'zod'
 import { authUtils } from '~/server/utils/auth';
 
 export default defineWebAuthnRegisterEventHandler({
-
+  getOptions: () => ({
+    authenticatorSelection: {
+      requireResidentKey: false,
+      residentKey: "preferred",
+      userVerification: "preferred"
+    }
+  }),
   async storeChallenge(event, challenge, attemptId) {
     authUtils.setChallenge(attemptId, challenge);
   },

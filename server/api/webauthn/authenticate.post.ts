@@ -1,6 +1,7 @@
 import { AuthUser, authUtils } from "~/server/utils/auth";
 
 export default defineWebAuthnAuthenticateEventHandler({
+  getOptions: () => ({ userVerification: 'required' }),
   async storeChallenge(event, challenge, attemptId) {
     await authUtils.setChallenge(attemptId, challenge);
   },
