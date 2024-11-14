@@ -1,4 +1,4 @@
-import { authUtils } from "~/server/utils/auth";
+import { AuthUser, authUtils } from "~/server/utils/auth";
 
 export default defineWebAuthnAuthenticateEventHandler({
   async storeChallenge(event, challenge, attemptId) {
@@ -33,9 +33,18 @@ export default defineWebAuthnAuthenticateEventHandler({
   },
   async onSuccess(event, { credential }) {
     console.log('onSuccess', credential);
+    const authUser = await hubKV().get<AuthUser>(`user:${credential.userId}`)
+    if (!authUser) {
+      throw createError({
+        statusCode: 404,
+        statusMessage: 'User not found'
+      })
+    }
     await setUserSession(event, {
       user: {
-        userName: credential.user.userName
+        id: authUser.id,
+        userName: authUser.userName,
+        createdAt: authUser.createdAt
       }
     })
   }

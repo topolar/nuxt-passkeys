@@ -2,8 +2,12 @@
   <div>
     <NuxtErrorBoundary @error="errorHandler">
       <template #error="{ error }">
-        {{ errorMessage }}
-        <button @click="error.value = null">Continue</button>
+        <div class="error">
+          <div>
+            {{ errorMessage }}
+          </div>
+          <button @click="error.value = null">Continue</button>
+        </div>
       </template>
       <NuxtPage />
     </NuxtErrorBoundary>
@@ -19,3 +23,16 @@ function errorHandler(e: unknown) {
 
 }
 </script>
+
+<style scoped>
+.error {
+  text-align: center;
+  color: red;
+  margin: auto;
+  max-width: 32em;
+}
+
+.error div {
+  text-align: left;
+}
+</style>

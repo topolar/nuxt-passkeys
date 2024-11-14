@@ -23,6 +23,9 @@ importers:
       human-id:
         specifier: ^4.1.1
         version: 4.1.1
+      nanoid:
+        specifier: '3'
+        version: 3.3.7
       nuxt:
         specifier: ^3.14.159
         version: 3.14.159(@parcel/watcher@2.5.0)(@types/node@22.9.0)(ioredis@5.4.1)(magicast@0.3.5)(rollup@4.26.0)(terser@5.36.0)(typescript@5.6.3)(vite@5.4.11(@types/node@22.9.0)(terser@5.36.0))

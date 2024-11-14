@@ -15,6 +15,7 @@
     "@simplewebauthn/server": "^11.0.0",
     "h3-zod": "^0.5.3",
     "human-id": "^4.1.1",
+    "nanoid": "3",
     "nuxt": "^3.14.159",
     "nuxt-auth-utils": "^0.5.3",
     "vue": "latest",

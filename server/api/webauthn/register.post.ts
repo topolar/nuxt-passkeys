@@ -27,22 +27,16 @@ export default defineWebAuthnRegisterEventHandler({
 
   async onSuccess(event, { user, credential }) {
     console.log('register.onSuccess', user, credential);
-    const newUser = await authUtils.createUser({
+    const authUser = await authUtils.createUser({
       userName: user.userName,
     });
-
-    if (!newUser) {
-      throw createError({
-        statusCode: 400,
-        message: 'User already exists'
-      })
-    }
-
-    await authUtils.addCredential(user.userName, { user: newUser, ...credential });
+    await authUtils.addCredential(user.userName, { userId: authUser.id, ...credential });
 
     await setUserSession(event, {
       user: {
-        userName: user.userName,
+        id: authUser.id,
+        userName: authUser.userName,
+        createdAt: authUser.createdAt
       }
     })
   },

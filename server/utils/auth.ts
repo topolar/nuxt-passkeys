@@ -1,8 +1,9 @@
 import { WebAuthnCredential } from "#auth-utils"
+import { nanoid } from "nanoid"
 
-export type AuthCredential = WebAuthnCredential & {
-    user: AuthUser
-}
+export type AuthCredential = {
+    userId: string;
+} & WebAuthnCredential
 
 export type AuthUserData = {
     userName: string,
@@ -10,10 +11,9 @@ export type AuthUserData = {
 }
 
 export type AuthUser = {
-    userName: string,
+    id: string
     createdAt: Date,
-}
-
+} & AuthUserData
 
 export const authUtils = {
     async setChallenge(attemptId: string, challenge: string) {
@@ -43,15 +43,12 @@ export const authUtils = {
     async getCredentialById(credentialID: string): Promise<AuthCredential | null> {
         return await hubKV().get<AuthCredential>(`credential:${credentialID}`);
     },
-    async getUser(username: string): Promise<AuthUser | null> {
-        return await hubKV().get<AuthUser>(`user:${username}`);
+    async getUserById(id: string): Promise<AuthUser | null> {
+        return await hubKV().get<AuthUser>(`user:${id}`);
     },
-    async createUser(userData: AuthUserData): Promise<AuthUser | null> {
-        if (await this.getUser(userData.userName)) {
-            return null;
-        }
-        const user = { createdAt: new Date(), ...userData }
-        await hubKV().set(`user:${userData.userName}`, user)
+    async createUser(userData: AuthUserData): Promise<AuthUser> {
+        const user: AuthUser = { id: nanoid(), createdAt: new Date(), ...userData }
+        await hubKV().set(`user:${user.id}`, user)
         return user;
     }
 }

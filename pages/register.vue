@@ -4,7 +4,6 @@
     <div>
       User Name:
       <input v-model="userName" placeholder="Optional" />
-      <button @click="login">login</button>
       <button @click="register">register</button>
     </div>
   </div>
@@ -24,14 +23,6 @@ const webAuthn = useWebAuthn()
 async function register() {
   if (!await webAuthn.register({ userName: userName.value ?? humanId() })) {
     throw new Error('webAuth.register failed!')
-  }
-  await userSession.fetch();
-  await navigateTo('/admin');
-}
-
-async function login() {
-  if (!await webAuthn.authenticate(userName.value)) {
-    throw new Error('webAuth.authenticate failed!')
   }
   await userSession.fetch();
   await navigateTo('/');
