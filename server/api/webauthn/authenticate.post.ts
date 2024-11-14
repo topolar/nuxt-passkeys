@@ -2,10 +2,10 @@ import { authUtils } from "~/server/utils/auth";
 
 export default defineWebAuthnAuthenticateEventHandler({
   async storeChallenge(event, challenge, attemptId) {
-    authUtils.setChallenge(attemptId, challenge);
+    await authUtils.setChallenge(attemptId, challenge);
   },
   async getChallenge(event, attemptId) {
-    const challenge = authUtils.getChallenge(attemptId);
+    const challenge = await authUtils.getChallenge(attemptId);
     if (!challenge) {
       throw createError({
         statusCode: 400,
@@ -22,7 +22,7 @@ export default defineWebAuthnAuthenticateEventHandler({
 
   async getCredential(event, credentialID) {
     console.log('getCredential', credentialID);
-    const credential = authUtils.getCredentialById(credentialID);
+    const credential = await authUtils.getCredentialById(credentialID);
     if (!credential) {
       throw createError({
         statusCode: 404,
@@ -35,7 +35,7 @@ export default defineWebAuthnAuthenticateEventHandler({
     console.log('onSuccess', credential);
     await setUserSession(event, {
       user: {
-        id: credential.user.id,
+        id: 0,
         userName: credential.user.userName
       }
     })

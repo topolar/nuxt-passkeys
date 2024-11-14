@@ -8,7 +8,7 @@ export default defineWebAuthnRegisterEventHandler({
   },
 
   async getChallenge(event, attemptId) {
-    const challenge = authUtils.getChallenge(attemptId);
+    const challenge = await authUtils.getChallenge(attemptId);
     if (!challenge) {
       throw createError({
         statusCode: 400,
@@ -27,10 +27,8 @@ export default defineWebAuthnRegisterEventHandler({
 
   async onSuccess(event, { user, credential }) {
     console.log('register.onSuccess', user, credential);
-    const newUser = authUtils.createUser({
+    const newUser = await authUtils.createUser({
       userName: user.userName,
-      createdAt: new Date(),
-      lastLoginAt: new Date(),
     });
 
     if (!newUser) {
@@ -44,13 +42,14 @@ export default defineWebAuthnRegisterEventHandler({
 
     await setUserSession(event, {
       user: {
-        id: newUser.id,
+        id: 0,
         userName: user.userName,
       }
     })
   },
-  excludeCredentials(event, userName): any {
+  async excludeCredentials(event, userName): Promise<any> {
     console.log('register.excludeCredentials', userName);
-    return authUtils.getCredentials(userName).map((i: any) => ({ id: i.id, transports: i.transports }));
+    const credentials = await authUtils.getCredentials(userName);
+    return credentials.map((i: any) => ({ id: i.id, transports: i.transports }));
   },
 })

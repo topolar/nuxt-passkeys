@@ -6,49 +6,51 @@ export type AuthCredential = WebAuthnCredential & {
 
 export type AuthUserData = {
     userName: string,
-    createdAt: Date,
-    lastLoginAt: Date
+    [id: string]: any
 }
 
-export type AuthUser = AuthUserData & { id: number }
+export type AuthUser = {
+    userName: string,
+    createdAt: Date,
+}
+
 
 export const authUtils = {
-    challenges: {} as { [id: string]: string },
-    credentials: {} as { [id: string]: AuthCredential[] },
-    credentialsIdIndex: {} as { [id: string]: AuthCredential },
-    users: {} as { [id: string]: AuthUser },
-    setChallenge(attemptId: string, challenge: string) {
+    async setChallenge(attemptId: string, challenge: string) {
         console.log('storeChallenge', attemptId);
-        this.challenges[attemptId] = challenge;
+        await hubKV().set(`challenge:${attemptId}`, challenge, { ttl: 60 })
     },
-    getChallenge(attemptId: string) {
+    async getChallenge(attemptId: string) {
         console.log('getChallenge', attemptId);
-        const challenge = this.challenges[attemptId];
+        const challenge = await hubKV().get<string>(`challenge:${attemptId}`);
         if (challenge) {
-            delete this.challenges[attemptId];
+            await hubKV().del(`challenge:${attemptId}`);
         }
         return challenge;
     },
-    addCredential(username: string, credential: AuthCredential) {
-        console.log('setCredential', username, credential);
-        if (!this.credentials[username]) this.credentials[username] = [];
-        this.credentials[username].push(credential);
-        this.credentialsIdIndex[credential.id] = credential;
+    async addCredential(username: string, credential: AuthCredential) {
+        const userCredentialIds = await hubKV().get<string[]>(`user:credentials:${username}`) ?? []
+        userCredentialIds.push(credential.id);
+        await hubKV().set(`credential:${credential.id}`, credential);
+        await hubKV().set(`user:credentials:${username}`, userCredentialIds);
     },
-    getCredentials(username: string): AuthCredential[] {
-        return this.credentials[username] ?? []
+    async getCredentials(username: string): Promise<AuthCredential[]> {
+        const userCredentialIds = await hubKV().get<string[]>(`user:credentials:${username}`) ?? []
+        const keys = userCredentialIds.map(id => `credential:${id}`);
+        return (await hubKV().getItems<AuthCredential>(keys)).map(i => i.value);
     },
-    getCredentialById(credentialID: string): AuthCredential {
-        return this.credentialsIdIndex[credentialID];
+    async getCredentialById(credentialID: string): Promise<AuthCredential | null> {
+        return await hubKV().get<AuthCredential>(`credential:${credentialID}`);
     },
-    getUser(username: string): AuthUser {
-        return this.users[username];
+    async getUser(username: string): Promise<AuthUser | null> {
+        return await hubKV().get<AuthUser>(`user:${username}`);
     },
-    createUser(userData: AuthUserData): AuthUser | null {
-        if (this.users[userData.userName]) {
+    async createUser(userData: AuthUserData): Promise<AuthUser | null> {
+        if (await this.getUser(userData.userName)) {
             return null;
         }
-        this.users[userData.userName] = { ...userData, id: Object.keys(this.users).length + 1 };
-        return this.users[userData.userName];
+        const user = { createdAt: new Date(), ...userData }
+        await hubKV().set(`user:${userData.userName}`, user)
+        return user;
     }
 }
