@@ -21,7 +21,6 @@
 
 <script lang="ts" setup>
 const { user, loggedIn, clear, fetch } = useUserSession();
-const userName = ref();
 const webAuthn = useWebAuthn()
 
 async function login() {
