@@ -10,12 +10,13 @@ export default defineWebAuthnRegisterEventHandler({
     }
   }),
   async storeChallenge(event, challenge, attemptId) {
-    authUtils.setChallenge(attemptId, challenge);
+    await authUtils.setChallenge(attemptId, challenge);
   },
 
   async getChallenge(event, attemptId) {
     const challenge = await authUtils.getChallenge(attemptId);
     if (!challenge) {
+      console.log('challenge not found or expired!');
       throw createError({
         statusCode: 400,
         message: 'Challenge not found or expired'

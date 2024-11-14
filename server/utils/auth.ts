@@ -17,8 +17,8 @@ export type AuthUser = {
 
 export const authUtils = {
     async setChallenge(attemptId: string, challenge: string) {
-        console.log('storeChallenge', attemptId);
-        await hubKV().set(`challenge:${attemptId}`, challenge, { ttl: 60 })
+        console.log(`store challenge:${attemptId}`, attemptId, challenge);
+        await hubKV().set(`challenge:${attemptId}`, challenge, { ttl: 120 })
     },
     async getChallenge(attemptId: string) {
         console.log('getChallenge', attemptId);
