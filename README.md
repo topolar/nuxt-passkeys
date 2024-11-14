@@ -1,4 +1,4 @@
-# Nuxt Passkeys sample
+# Nuxt Passkeys Sample
 
 ## Setup
 
