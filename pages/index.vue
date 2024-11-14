@@ -12,7 +12,7 @@
       </template>
     </div>
     <div class="info">
-      This is example implementation of Password and Username less identification.
+      This is example implementation of Passwordless identification.
       Say bye to forgotten passwords thanks to <NuxtLink to="https://webauthn.guide//">webauthn</NuxtLink>.
     </div>
   </div>
