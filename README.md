@@ -5,6 +5,8 @@ Say goodbye to forgotten passwords, thanks to [webauthn](https://webauthn.guide)
 
 As persistent storage is used [NuxtHub KV](https://hub.nuxt.com/docs/features/kv)
 
+You can try it at [nuxt.dev](https://nuxt-passkeys.nuxt.dev)
+
 ## Dependencies
 
 ```json

@@ -15,6 +15,7 @@
     <div class="info">
       This is example implementation of Passwordless identification.
       Say bye to forgotten passwords thanks to <NuxtLink to="https://webauthn.guide">webauthn</NuxtLink>.
+      Source code is available on <NuxtLink to="https://github.com/topolar/nuxt-passkeys">Github</NuxtLink>.
     </div>
   </div>
 </template>
