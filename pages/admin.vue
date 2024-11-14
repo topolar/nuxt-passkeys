@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Administration</h1>
+    <h1>Administration for {{ userSession.user.value?.userName }}</h1>
     <button @click="logout">Logout</button>
   </div>
 </template>
@@ -12,8 +12,8 @@ definePageMeta({
 
 const userSession = useUserSession()
 
-function logout() {
+async function logout() {
   userSession.clear();
-  navigateTo('/');
+  await navigateTo('/');
 }
 </script>
