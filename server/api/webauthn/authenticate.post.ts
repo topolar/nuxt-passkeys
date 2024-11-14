@@ -35,7 +35,6 @@ export default defineWebAuthnAuthenticateEventHandler({
     console.log('onSuccess', credential);
     await setUserSession(event, {
       user: {
-        id: 0,
         userName: credential.user.userName
       }
     })

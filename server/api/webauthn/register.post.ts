@@ -38,11 +38,10 @@ export default defineWebAuthnRegisterEventHandler({
       })
     }
 
-    authUtils.addCredential(user.userName, { user: newUser, ...credential });
+    await authUtils.addCredential(user.userName, { user: newUser, ...credential });
 
     await setUserSession(event, {
       user: {
-        id: 0,
         userName: user.userName,
       }
     })

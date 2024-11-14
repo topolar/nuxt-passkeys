@@ -33,6 +33,7 @@ export const authUtils = {
         userCredentialIds.push(credential.id);
         await hubKV().set(`credential:${credential.id}`, credential);
         await hubKV().set(`user:credentials:${username}`, userCredentialIds);
+        console.log('addCredential done');
     },
     async getCredentials(username: string): Promise<AuthCredential[]> {
         const userCredentialIds = await hubKV().get<string[]>(`user:credentials:${username}`) ?? []
