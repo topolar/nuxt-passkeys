@@ -14,6 +14,10 @@ A modern implementation of passwordless authentication using WebAuthn in a Nuxt.
 
 Try the live demo at [nuxt-passkeys.nuxt.dev](https://nuxt-passkeys.nuxt.dev)
 
+## 📚 Documentation
+
+- [Implementation Review](review.md) - Detailed review of the implementation and architecture
+
 ## 🛠️ Tech Stack
 
 - **Frontend**: Nuxt.js 3, Vue.js
