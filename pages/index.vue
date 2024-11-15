@@ -53,9 +53,16 @@
           </div>
         </div>
 
-        <div class="mt-6 sm:mt-8 bg-white/70 dark:bg-gray-800/70 backdrop-blur-lg shadow-xl rounded-lg p-4 sm:p-8">
-          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">About Passkeys</h3>
-          <p class="text-gray-600 dark:text-gray-400 text-sm">
+        <div class="mt-6 sm:mt-8 w-full">
+          <div class="relative">
+            <div class="absolute inset-0 flex items-center">
+              <div class="w-full border-t border-gray-300 dark:border-gray-600"></div>
+            </div>
+            <div class="relative flex justify-center">
+              <span class="bg-white/70 dark:bg-gray-800/70 backdrop-blur-lg px-2 text-sm text-gray-500 dark:text-gray-400">About Passkeys</span>
+            </div>
+          </div>
+          <p class="mt-4 text-center text-gray-600 dark:text-gray-400 text-sm">
             This is an example implementation of passwordless authentication using WebAuthn.
             Say goodbye to forgotten passwords thanks to
             <a href="https://webauthn.guide" class="text-primary-600 hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300 transition-colors duration-200">
